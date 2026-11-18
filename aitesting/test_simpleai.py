@@ -1,0 +1,15 @@
+from playwright.sync_api import Page, expect
+def login(page: Page):
+    page.goto("https://www.demoblaze.com/")
+    expect(page.get_by_role("link", name="Home (current)")).to_be_visible()
+    page.get_by_role("link", name="Contact").click()
+    expect(page.get_by_role("dialog", name="New message")).to_be_visible()
+    page.locator("#recipient-email").click()
+    page.get_by_role("dialog", name="New message").click()
+    expect(page.get_by_role("img", name="Second slide")).to_be_visible()
+    page.get_by_role("textbox", name="Message:").click()
+    page.locator("#recipient-email").click()
+    page.locator("#recipient-email").fill("dkere")
+    expect(page.get_by_role("img", name="Third slide")).to_be_visible()
+    page.once("dialog", lambda dialog: dialog.dismiss())
+    page.get_by_role("button", name="Send message").click()
